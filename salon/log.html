@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Salón de Fiestas "Celebración"</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #fff8f0;
+    margin: 0;
+    color: #333;
+  }
+  header, footer {
+    background: #fceaf0;
+    color: white;
+    text-align: center;
+    padding: 20px;
+  }
+  .carrusel {
+    max-width: 800px;
+    margin: 40px auto;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    position: relative;
+    background: #000; /* Fondo negro para contraste */
+    padding: 10px 0; /* Espaciado arriba y abajo */
+  }
+  .slider {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    /* width se ajusta con JS para que no quede espacio vacío */
+  }
+  .slide {
+    min-width: 800px; /* Igual al max-width del carrusel */
+    flex-shrink: 0;
+    position: relative;
+    padding: 0 10px; /* Espacio entre slides */
+    box-sizing: border-box;
+  }
+  .slide img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover; /* Llena el espacio sin distorsión */
+    border-radius: 10px;
+    display: block;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+  }
+  .info {
+    position: absolute;
+    bottom: 25px;
+    left: 25px;
+    background: rgba(0,0,0,0.6);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    max-width: 70%;
+  }
+  .info h2 {
+    margin: 0 0 5px 0;
+  }
+  button.prev, button.next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.4);
+    border: none;
+    color: white;
+    font-size: 28px;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 50%;
+    user-select: none;
+    z-index: 10;
+    transition: background 0.3s ease;
+  }
+  button.prev:hover, button.next:hover {
+    background: rgba(0,0,0,0.7);
+  }
+  button.prev {
+    left: 10px;
+  }
+  button.next {
+    right: 10px;
+  }
+  .galeria {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+    text-align: center;
+  }
+  .galeria h2 {
+    margin-bottom: 20px;
+  }
+  .imagenes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+  }
+  .imagenes img {
+    width: 250px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+  .imagenes img:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+  @media (max-width: 840px) {
+    .carrusel {
+      max-width: 100%;
+    }
+    .slide {
+      min-width: 100%;
+      padding: 0 5px;
+    }
+    .slide img {
+      height: 250px;
+    }
+    .imagenes img {
+      width: 45vw;
+      height: auto;
+    }
+  }
+  @media (max-width: 480px) {
+    .imagenes img {
+      width: 90vw;
+      height: auto;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Salón de Fiestas "Celebración"</h1>
+  <p>¡Celebra con nosotros tus mejores momentos!</p>
+</header>
+
+<section class="carrusel">
+  <div class="slider">
+    <div class="slide">
+      <img src="descarga (1).jpg" alt="Evento 1" />
+      <div class="info">
+        <h2>Evento 1</h2>
+        <p>Espacios perfectos para tu gran día.</p>
+      </div>
+    </div>
+    <div class="slide">
+      <img src="descarga.jpg" alt="Evento 2" />
+      <div class="info">
+        <h2>Evento 2</h2>
+        <p>Diversión y seguridad para los niños.</p>
+      </div>
+    </div>
+    <div class="slide">
+      <img src="images (1).jpg" alt="Evento 3" />
+      <div class="info">
+        <h2>Evento 3</h2>
+        <p>Salones equipados para conferencias y más.</p>
+      </div>
+    </div>
+    <div class="slide">
+      <img src="images (2).jpg" alt="Evento 4" />
+      <div class="info">
+        <h2>Evento 4</h2>
+        <p>Decoración y ambientación a tu gusto.</p>
+      </div>
+    </div>
+  </div>
+  <button class="prev">&#10094;</button>
+  <button class="next">&#10095;</button>
+</section>
+
+<section class="galeria">
+  <h2>Galería de Imágenes</h2>
+  <div class="imagenes">
+    <img src="descarga (1).jpg" alt="Evento 1" />
+    <img src="descarga.jpg" alt="Evento 2" />
+    <img src="images (1).jpg" alt="Evento 3" />
+    <img src="images (2).jpg" alt="Evento 4" />
+  </div>
+</section>
+
+<footer>
+  <p>© 2025 Salón Celebración - Todos los derechos reservados</p>
+</footer>
+
+<script>
+  const slider = document.querySelector('.slider');
+  const slides = document.querySelectorAll('.slide');
+  const totalSlides = slides.length;
+  let currentIndex = 0;
+
+  // Establecer el ancho dinámicamente para que no haya espacio extra
+  function setSliderWidth() {
+    const slideWidth = slides[0].offsetWidth + 20; // ancho + padding 10px * 2
+    slider.style.width = (slideWidth * totalSlides) + 'px';
+  }
+
+  window.addEventListener('resize', () => {
+    setSliderWidth();
+    updateSlider();
+  });
+
+  function updateSlider() {
+    const slideWidth = slides[0].offsetWidth + 20; // ancho + padding
+    slider.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+  }
+
+  document.querySelector('.next').addEventListener('click', () => {
+    currentIndex = (currentIndex + 1) % totalSlides;
+    updateSlider();
+  });
+
+  document.querySelector('.prev').addEventListener('click', () => {
+    currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+    updateSlider();
+  });
+
+  // Inicializar slider
+  setSliderWidth();
+  updateSlider();
+
+  // Cambio automático cada 5 segundos
+  setInterval(() => {
+    currentIndex = (currentIndex + 1) % totalSlides;
+    updateSlider();
+  }, 5000);
+</script>
+  
+</body>
+</html>
